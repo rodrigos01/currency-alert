@@ -11,7 +11,6 @@ import com.combah.currencyalert.model.Currency;
 import com.combah.currencyalert.viewmodel.CurrencyViewModel;
 import com.combah.currencyalert.viewmodel.MainViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;

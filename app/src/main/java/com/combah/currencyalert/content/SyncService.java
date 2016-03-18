@@ -1,36 +1,21 @@
 package com.combah.currencyalert.content;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
+import android.app.job.JobParameters;
+import android.app.job.JobService;
 
 /**
  * Created by rodrigo on 12/14/15.
  */
-public class SyncService extends Service {
-
-    private static SyncAdapter sSyncAdapter = null;
-    private static final Object sSyncAdapterLock = new Object();
+public class SyncService extends JobService {
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        /*
-         * Create the sync adapter as a singleton.
-         * Set the sync adapter as syncable
-         * Disallow parallel syncs
-         */
-        synchronized (sSyncAdapterLock) {
-            if (sSyncAdapter == null) {
-                sSyncAdapter = new SyncAdapter(getApplicationContext(), true);
-            }
-        }
+    public boolean onStartJob(JobParameters params) {
+        SyncManager.getInstance(this).sync();
+        return false;
     }
 
-    @Nullable
     @Override
-    public IBinder onBind(Intent intent) {
-        return sSyncAdapter.getSyncAdapterBinder();
+    public boolean onStopJob(JobParameters params) {
+        return false;
     }
 }
