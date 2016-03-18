@@ -79,14 +79,19 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         @Override
         public void onResponse(YahooResponse response) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            Set<String> symbols = preferences.getStringSet("currencies", null);
             SharedPreferences.Editor editor = preferences.edit();
             for (YahooResponse.ResourceWrapper resourceWrapper : response.list.resources) {
                 Currency currency = resourceWrapper.resource.currency;
 
                 double oldValue = preferences.getFloat(currency.symbol, 0);
 
-                if (oldValue > currency.value) {
-                    sendNotification(currency.symbol, currency.value);
+                if (oldValue - currency.value > 0.001) {
+                    int messageId = 0;
+                    if (symbols != null && symbols.contains(currency.symbol)) {
+                        messageId = new ArrayList<>(symbols).indexOf(currency.symbol);
+                    }
+                    sendNotification(currency.symbol, currency.value, messageId);
                 }
 
                 editor.putFloat(currency.symbol, (float) currency.value);
@@ -97,7 +102,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
     };
 
-    private void sendNotification(String symbol, double value) {
+    private void sendNotification(String symbol, double value, int messageId) {
         Intent intent = new Intent(getContext(), MainActivity.class);
 
         PendingIntent contentIntent = PendingIntent.getActivity(getContext(), 0,
@@ -119,6 +124,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         mBuilder.setContentIntent(contentIntent);
         android.app.NotificationManager notificationManager =
                 (android.app.NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, mBuilder.build());
+        notificationManager.notify(messageId, mBuilder.build());
     }
 }

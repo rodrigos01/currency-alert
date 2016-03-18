@@ -47,7 +47,7 @@ public class MainViewModel extends Observable {
                 currencies.put(currency.symbol, currency);
             }
             setChanged();
-            notifyObservers(currencies);
+            notifyObservers(getCurrencies());
         }
     }
 

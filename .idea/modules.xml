@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CurrencyAlert.iml" filepath="$PROJECT_DIR$/CurrencyAlert.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/currency-alert.iml" filepath="$PROJECT_DIR$/currency-alert.iml" />
     </modules>
   </component>
 </project>
